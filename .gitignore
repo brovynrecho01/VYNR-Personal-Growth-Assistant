@@ -1,5 +1,17 @@
-# Object file
-*.o
+# deps
+/node_modules
 
-# Ada Library Information
-*.ali
+# next
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# env — keep local credentials out of version control
+.env*
+!.env.example
+
+# misc
+.DS_Store
+npm-debug.log*
+.vercel

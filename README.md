@@ -1,27 +1,68 @@
-⚡ VYNR — Personal Growth Intelligence"Build the man. The life will follow."An autonomous, real-time voice-interactive AI assistant engineered for discipline tracking, behavioral accountability, and zero-bullshit personal growth. Built 100% via Prompt-Driven Development (PDD).📌 Executive SummaryVYNR (dibaca: Veynor) adalah prototipe asisten AI personal (Personal Growth Intelligence) yang dirancang untuk mendobrak paradigma chatbot konvensional. Berbeda dengan asisten digital generik yang pasif atau platform pengembangan diri yang dipenuhi fake positivity, VYNR memegang filosofi maskulin yang tenang, tajam, reflektif, dan brutal secara logis.Proyek ini dibangun dari nol (from scratch) dengan metodologi 100% Vibe Coding dan Prompt-Driven Development (PDD), mengorkestrasi agen arsitektur backend (Argon) dan frontend engine (Antigravity didukung model penalaran tinggi Opus 5.5) ke dalam satu kesatuan arsitektur Full-Stack Monorepo.🧬 Core Philosophy & PersonaSistem ini beroperasi di bawah prinsip manifesto inti:Discipline > Motivation: Motivasi adalah stimulus sesaat; sistem, repetisi, dan kebiasaan harian adalah pembentuk karakter sejati.Calm but Brutal: Karakter vokal pria yang berat, dalam (deep), tenang, dan maskulin kasual (Bahasa Indonesia santai 'lo/gue'), langsung membedah dalih dan alasan tanpa kompromi.Grounded Reality: Menolak validasi emosional palsu; fokus murni pada metrik aksi, tanggung jawab penuh (ownership), dan eksekusi target nyata.🚀 Key Features1. 100% Automated Cinematic Boot SequenceInisialisasi sistem otomatis dengan loading telemetry (0% – 100%) berdurasi ~2 detik tanpa perlu klik tombol manual.Transisi mulus ke antarmuka utama diikuti audio sapaan khas doktrin VYNR secara instan:"Sistem online. Realita nggak peduli sama alasan lo hari ini. Apa target eksekusi lo sekarang?"2. Low-Latency Voice Pipeline (Bidirectional)Live STT (Speech-to-Text): Transkripsi suara real-time berbasis WebSocket dengan voice activity endpointing cepat (~600ms) untuk mengeliminasi jeda canggung setelah berbicara.Reflex Reasoning Engine: Didukung LLM latensi ultra-rendah dengan penanganan streaming token (SSE / Web Streams) langsung ke klien.Masculine TTS (Text-to-Speech): Sintesis suara pria maskulin dan berat dengan artikulasi Bahasa Indonesia yang natural.3. Reactive 3D Neural Orb & Spatial CanvasVisualisasi kanvas WebGL berbasis React Three Fiber (R3F) yang merespons spektrum frekuensi audio secara dinamis (berdenyut dan berpendar saat mendengar dan berbicara).Dilengkapi background filamen melayang bertema Neural Float dengan nuansa dark stealth brutalist.Integrasi computer vision untuk interaksi rotasi (pan) dan pembesaran (zoom) objek 3D melalui sensor gestur tangan kamera web.4. Minimalist Glassmorphism HUDPanel telemetri mengambang (HUD overlay) menampilkan:Indikator Discipline Index & kalkulasi konsistensi harian.Failure & Excuse Logger untuk mengonfrontasi alasan dan kegagalan eksekusi.Teks dialog interaktif (live transcription stream).🛠️ System Architecture & Tech StackAplikasi ini menggunakan arsitektur Full-Stack Monorepo Next.js untuk memangkas latensi komunikasi jaringan antar-lapisan:vynr-assistant/
+# VYNR — Personal Growth Intelligence
+
+> *"Build the man. The life will follow."*
+
+VYNR is a real-time, voice-interactive Personal Growth Intelligence system built with **Next.js (App Router)**, **React Three Fiber**, **Zustand**, **Gemini 3.8 Flash / Groq**, **Deepgram Nova-3**, browser speech synthesis, and **Supabase pgvector**.
+
+---
+
+## Architecture
+
+```text
+vynr/
 ├── src/
 │   ├── app/
-│   │   ├── api/vynr/route.ts      # Core LLM Engine, System Prompt & Persona Injection
-│   │   └── page.tsx               # Main Composition (WebGL Canvas + DOM Overlay)
+│   │   ├── api/
+│   │   │   ├── vynr/route.ts      # Core LLM + Persona + RAG Memory SSE bridge (GET/POST/PUT)
+│   │   │   ├── chat/route.ts      # Alias route forwarding to /api/vynr
+│   │   │   └── speech/route.ts    # Deepgram JWT grant (GET)
+│   │   ├── globals.css            # Stealth pure-black theme, glassmorphism & film grain utilities
+│   │   ├── layout.tsx             # Root layout & typography (Inter + JetBrains Mono)
+│   │   └── page.tsx               # Main viewport combining Visualizer + ControlHUD
 │   ├── components/
 │   │   └── ui/
-│   │       ├── Visualizer.tsx     # 3D Reactive Orb (R3F & Shader Logic)
-│   │       └── ControlHUD.tsx     # Stealth Glassmorphism HUD Interface
+│   │       ├── Visualizer.tsx     # 60fps R3F GLSL Shader Sphere + 64-bin FFT InstancedMesh ring
+│   │       └── ControlHUD.tsx     # Floating glassmorphism HUD, Discipline Index, habit & slip logger
 │   ├── lib/
-│   │   └── audioPipeline.ts       # AudioContext, WebSocket STT & TTS Streamer
-│   └── store/
-│       └── useVynrStore.ts        # Centralized Zustand State (Transient Audio Loop)
-DomainTeknologiDeskripsiFrameworkNext.js 14+ (App Router), TypeScriptRuntime terpadu untuk SSR, komponen UI, dan API RoutesStyling & MotionTailwind CSS, Framer MotionDesain antarmuka dark mode transparan (glassmorphism)3D RenderingThree.js, React Three Fiber, PostprocessingPendaran partikel Bloom, material emissive, dan geometri 3DState ManagementZustandManajemen state terpusat dengan optimasi transient updateReasoning EngineGemini Flash / Groq (LPU)Inferensi teks berkecepatan tinggi dengan latensi token minimalVoice EngineDeepgram / Web Speech / ElevenLabsPemrosesan audio dua arah berkecepatan tinggiVision SensorMediaPipe HandsPelacakan koordinat gestur tangan via kamera web⚡ Engineering & Performance OptimizationsTransient Audio Loop (Anti-Lag WebGL):
-Amplitudo suara (audioLevel) dibaca secara langsung melalui memori internal Zustand (useVynrStore.getState().audioLevel) di dalam siklus frame 3D (useFrame). Hal ini mencegah re-render komponen React DOM hingga 60 kali per detik yang dapat merusak performa browser.Hydration Mismatch Shield:
-Penerapan lifecycle gate (isMounted) pada komponen HUD untuk mengeliminasi konflik hidrasi antara SSR Next.js dan ekstensi peramban.Sub-Second Streaming Response:
-Pemrosesan respons kalimat per kalimat (sentence-aware chunking) sehingga sintesis audio dapat diputar saat kata pertama tiba tanpa menunggu seluruh paragraf selesai digenerasikan.💻 Local Setup & InstallationPrasyaratNode.js v18.x atau lebih baruNPM / PNPM / Yarn1. Kloning Repositorigit clone https://github.com/<username>/vynr-assistant.git
-cd vynr-assistant
-2. Pasang Dependensinpm install
-3. Konfigurasi Lingkungan (.env.local)Buat berkas .env.local pada direktori utama (root) dan tambahkan kredensial berikut:# AI Reasoning Engine
-GEMINI_API_KEY=your_gemini_api_key_here
+│   │   ├── ai/
+│   │   │   ├── gemini.ts          # Singleton @google/genai client
+│   │   │   └── persona.ts         # Strict VYNR_SYSTEM_PROMPT & VOICE_MODALITY_ADDENDUM
+│   │   ├── memory/
+│   │   │   ├── schema.ts          # Zod schemas for habits, logs, targets, failures & vector memories
+│   │   │   ├── embeddings.ts      # 768-dim MRL L2-normalized gemini-embedding-2 helper
+│   │   │   ├── store.ts           # Pluggable MemoryStore (Supabase pgvector + in-process dev store)
+│   │   │   ├── context.ts         # Discipline Index calculator & <MEMORY> RAG prompt builder
+│   │   │   └── extractor.ts       # Post-turn background fact extractor (gemini-3.5-flash-lite)
+│   │   ├── audioPipeline.ts       # Web Audio API dual AnalyserNodes, Deepgram WS STT & PCM TTS queue
+│   │   ├── dates.ts               # Timezone-safe YYYY-MM-DD calendar math
+│   │   └── env.ts                 # Validated server environment configuration
+│   ├── store/
+│   │   └── useVynrStore.ts        # Central Zustand store with transient 60fps audio level selectors
+│   └── types/
+│       └── vynr.ts                # Shared wire protocol & domain types
+└── supabase/
+    └── migrations/
+        └── 0001_vynr_memory.sql   # Postgres + pgvector HNSW schema & match_memories RPC
+```
 
-# Voice Pipeline (Opsional / Tergantung Provider)
-DEEPGRAM_API_KEY=your_deepgram_api_key_here
-ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
-4. Jalankan Aplikasinpm run dev
-Buka http://localhost:3000 di peramban, izinkan akses mikrofon dan kamera web, lalu biarkan sistem menjalankan boot sequence secara otomatis.🧭 Project Roadmap[x] Phase 1: Architecture & State Setup (Next.js monorepo, Zustand store, transient audio loop).[x] Phase 2: Logic Engine & Streaming (Low-latency LLM route, persona injection, STT/TTS pipeline).[x] Phase 3: Spatial Interface & HUD (R3F 3D Visualizer, Bloom postprocessing, responsive HUD).[x] Phase 4: Natural Indonesian Calibration (Default ID localization, grounded opening greeting).[ ] Phase 5: Persistent Vector Memory (Integrasi Vector DB untuk riwayat komitmen jangka panjang & RAG reflektif).[ ] Phase 6: Multi-Device Deployment (Aplikasi desktop mandiri via Electron/Tauri).👨‍💻 Author & System DesignerRole: AI System Designer, Full-Stack Vibe Coder & Software EngineerFokus: Desain Arsitektur Agen AI (Agentic Workflows), Prompt-Driven Development (PDD), Real-Time Spatial & Voice Interfaces.
+---
+
+## Quickstart
+
+1. **Configure Environment Variables**
+   Edit `.env.local` and supply your keys:
+   - `GEMINI_API_KEY` (uses `gemini-3.8-flash` for reasoning, `gemini-3.5-flash-lite` for background memory extraction, and `gemini-embedding-2` for 768-dim vector RAG)
+   - `GROQ_API_KEY` (optional fast fallback using `llama-3.3-70b-versatile`)
+   - `DEEPGRAM_API_KEY` (optional — falls back to browser `SpeechRecognition` when unset)
+   - `SUPABASE_URL` & `SUPABASE_SERVICE_ROLE_KEY` (optional — falls back to in-process memory store when unset)
+
+2. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:3000`.
+
+3. **Controls & Shortcuts**
+   - `Space` — Toggle microphone listening on/off
+   - `Esc` — Interrupt VYNR mid-speech (or simply speak over VYNR when **Barge-In** is enabled)
+   - **Left HUD Panel** — Mark daily habits `DONE` or `MISS`, track new habits, or log a slip/excuse to test VYNR's confrontation engine.
